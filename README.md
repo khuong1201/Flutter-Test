@@ -32,9 +32,6 @@ Dự án này sử dụng các thư viện sau để xây dựng các chức nă
 * `path: ^1.9.1`
   Hỗ trợ xử lý các đường dẫn file, cần thiết cho việc khởi tạo database.
 
-### Cấu trúc thư mục
-
-Dự án được tổ chức theo cấu trúc sau để đảm bảo tính dễ đọc và dễ bảo trì:
 
 ### Hướng dẫn cài đặt và chạy
 
@@ -48,3 +45,4 @@ flutter create .
 flutter pub get
 
 flutter run
+
