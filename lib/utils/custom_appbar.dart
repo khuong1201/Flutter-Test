@@ -1,14 +1,41 @@
+import 'package:contact_list/utils/email_session.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class AppCustomBar extends StatelessWidget implements PreferredSizeWidget {
+class AppCustomBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onAddContact;
   final VoidCallback? onProfile;
 
   const AppCustomBar({super.key, this.onAddContact, this.onProfile});
 
   @override
+  State<AppCustomBar> createState() => _AppCustomBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _AppCustomBarState extends State<AppCustomBar> {
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEmail();
+  }
+
+  Future<void> loadEmail() async {
+    final storedEmail = await LocalStorage.getEmail();
+    setState(() {
+      email = storedEmail;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final avatar = email != null
+        ? "https://ui-avatars.com/api/?name=${email!.split('@')[0]}&background=random"
+        : "";
     return AppBar(
       backgroundColor: Colors.blue.shade100,
       elevation: 0,
@@ -40,7 +67,7 @@ class AppCustomBar extends StatelessWidget implements PreferredSizeWidget {
               child: IconButton(
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
-                onPressed: onAddContact,
+                onPressed: widget.onAddContact,
                 icon: const Icon(
                   FontAwesomeIcons.plus,
                   size: 14,
@@ -49,8 +76,6 @@ class AppCustomBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-
-          // Tiêu đề
           const Text(
             "Contact",
             style: TextStyle(
@@ -60,21 +85,21 @@ class AppCustomBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           InkWell(
-            onTap: onProfile,
+            onTap: widget.onProfile,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(40),
-              child: Image.network(
-                "https://hocdohoacaptoc.com/wp-content/uploads/2022/02/avata-dep-nam-2.jpg",
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
+              child: avatar.isNotEmpty
+                  ? Image.network(
+                      avatar,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
+                  : const Icon(Icons.person, size: 50),
             ),
           ),
         ],
       ),
     );
   }
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

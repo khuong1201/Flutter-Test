@@ -19,7 +19,7 @@ class AuthLocalDataSource {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-          'CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT)',
+          'CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, avatar TEXT, password TEXT)',
         );
       },
     );

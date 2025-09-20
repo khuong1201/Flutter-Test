@@ -1,4 +1,5 @@
 import 'package:contact_list/data/models/user_model.dart';
+import 'package:contact_list/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/auth/auth_bloc.dart';
@@ -25,11 +26,24 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _register() {
+    final username = _usernameCtrl.text.trim();
+    final email = _emailCtrl.text.trim();
+    final password = _passCtrl.text.trim();
+
+    if (username.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Please fill all fields")));
+      return;
+    }
+
     final user = UserModel(
-      username: _usernameCtrl.text.trim(),
-      email: _emailCtrl.text.trim(),
-      password: _passCtrl.text.trim(),
+      username: username,
+      email: email,
+      avatar: "https://i.pravatar.cc/150?u=$username",
+      password: password,
     );
+
     context.read<AuthBloc>().add(AuthRegisterEvent(user));
   }
 
@@ -45,7 +59,10 @@ class _RegisterPageState extends State<RegisterPage> {
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(const SnackBar(content: Text("Register success")));
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => LoginPage()),
+              );
             }
             if (state.error != null) {
               ScaffoldMessenger.of(

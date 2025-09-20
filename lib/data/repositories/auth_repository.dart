@@ -20,6 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
       id: user.id,
       username: user.username,
       email: user.email,
+      avatar: user.avatar,
       password: user.password,
     );
     await localDataSource.insertUser(model);
@@ -35,11 +36,12 @@ class AuthRepositoryImpl implements AuthRepository {
       id: userModel.id,
       username: userModel.username,
       email: userModel.email,
+      avatar: userModel.avatar,
       password: userModel.password,
     );
   }
-  
-   @override
+
+  @override
   Future<void> logout() async {
     await LocalStorage.clearEmail();
   }

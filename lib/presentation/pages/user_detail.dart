@@ -50,6 +50,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
       id: widget.id,
       name: _nameCtrl.text.trim(),
       email: _emailCtrl.text.trim(),
+      avatar: "https://i.pravatar.cc/150?u=$_nameCtrl",
       phone: _phoneCtrl.text.trim(),
     );
 
@@ -57,30 +58,48 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
 
     if (widget.id == null) {
       bloc.add(AddContactEvent(contact));
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Contact added")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Contact added")));
     } else {
       bloc.add(UpdateContactEvent(contact));
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Contact updated")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Contact updated")));
     }
 
     Navigator.pop(context, contact);
   }
 
+  void _deleteContact() {
+    final bloc = context.read<ContactBloc>();
+    if (widget.id != null) {
+      bloc.add(DeleteContactEvent(widget.id!));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Contact deleted")));
+      Navigator.pop(context, true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.id == null ? "Add Contact" : "Edit Contact")),
+      appBar: AppBar(
+        title: Text(widget.id == null ? "Add Contact" : "Edit Contact"),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage:
-                  widget.avatar.isNotEmpty ? NetworkImage(widget.avatar) : null,
-              child: widget.avatar.isEmpty ? const Icon(Icons.person, size: 50) : null,
+              backgroundImage: widget.avatar.isNotEmpty
+                  ? NetworkImage(widget.avatar)
+                  : null,
+              child: widget.avatar.isEmpty
+                  ? const Icon(Icons.person, size: 50)
+                  : null,
             ),
             const SizedBox(height: 16),
             TextField(
@@ -100,12 +119,30 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _saveContact,
-                child: Text(widget.id == null ? "Add Contact" : "Update Contact"),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: TextButton(
+                    onPressed: _saveContact,
+                    child: Text(
+                      widget.id == null ? "Add Contact" : "Update Contact",
+                    ),
+                  ),
+                ),
+                if (widget.id != null) ...[
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    child: TextButton(
+                      onPressed: _deleteContact,
+                      child: const Text(
+                        "Delete Contact",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ],
         ),

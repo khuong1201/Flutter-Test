@@ -19,7 +19,7 @@ class ContactLocalDataSource {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, phone TEXT)",
+          "CREATE TABLE contacts(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, avatar TEXT, email TEXT, phone TEXT)",
         );
       },
     );
@@ -30,12 +30,31 @@ class ContactLocalDataSource {
   }
 
   Future<void> _insertSampleData(Database db) async {
-    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM contacts')) ?? 0;
+    final count =
+        Sqflite.firstIntValue(
+          await db.rawQuery('SELECT COUNT(*) FROM contacts'),
+        ) ??
+        0;
     if (count == 0) {
       await db.transaction((txn) async {
-        await txn.insert('contacts', {'name': 'Alice', 'email': 'alice@mail.com', 'phone': '123456789'});
-        await txn.insert('contacts', {'name': 'Bob', 'email': 'bob@mail.com', 'phone': '987654321'});
-        await txn.insert('contacts', {'name': 'Charlie', 'email': 'charlie@mail.com', 'phone': '555666777'});
+        await txn.insert('contacts', {
+          'name': 'Alice',
+          'email': 'alice@mail.com',
+          'avatar': "https://i.pravatar.cc/150?u=Alice",
+          'phone': '123456789',
+        });
+        await txn.insert('contacts', {
+          'name': 'Bob',
+          'email': 'bob@mail.com',
+          'avatar': "https://i.pravatar.cc/150?u=Bob",
+          'phone': '987654321',
+        });
+        await txn.insert('contacts', {
+          'name': 'Charlie',
+          'email': 'charlie@mail.com',
+          'avatar': "https://i.pravatar.cc/150?u=Charlie",
+          'phone': '555666777',
+        });
       });
     }
   }
@@ -53,7 +72,12 @@ class ContactLocalDataSource {
 
   Future<void> updateContact(ContactModel contact) async {
     final db = await database;
-    await db.update('contacts', contact.toMap(), where: 'id = ?', whereArgs: [contact.id]);
+    await db.update(
+      'contacts',
+      contact.toMap(),
+      where: 'id = ?',
+      whereArgs: [contact.id],
+    );
   }
 
   Future<void> deleteContact(int id) async {

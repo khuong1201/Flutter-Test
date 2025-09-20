@@ -2,6 +2,7 @@ import 'package:contact_list/presentation/blocs/auth/auth_bloc.dart';
 import 'package:contact_list/presentation/blocs/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../domain/entities/user.dart';
 import 'login_page.dart';
@@ -19,12 +20,9 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(FontAwesomeIcons.rightFromBracket),
             onPressed: () {
-              // Gửi event logout
               context.read<AuthBloc>().add(AuthLogoutEvent());
-
-              // Quay về LoginPage
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const LoginPage()),
                 (route) => false,
@@ -39,10 +37,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              child: Text(
-                user.username.isNotEmpty ? user.username[0].toUpperCase() : '?',
-                style: const TextStyle(fontSize: 40),
-              ),
+              child: Image.network(user.avatar),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -61,20 +56,17 @@ class ProfilePage extends StatelessWidget {
               subtitle: Text("*" * user.password.length),
             ),
             const SizedBox(height: 20),
-            ElevatedButton.icon(
+            TextButton.icon(
               onPressed: () {
-                // Gửi event logout
                 context.read<AuthBloc>().add(AuthLogoutEvent());
-
-                // Quay về LoginPage
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const LoginPage()),
                   (route) => false,
                 );
               },
-              icon: const Icon(Icons.logout),
+              icon: const Icon(FontAwesomeIcons.rightFromBracket),
               label: const Text("Logout"),
-              style: ElevatedButton.styleFrom(
+              style: TextButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
               ),
             ),

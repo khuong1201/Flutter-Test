@@ -13,6 +13,7 @@ class ContactRepositoryImpl implements ContactRepository {
     await localDataSource.insertContact(ContactModel(
       name: contact.name,
       email: contact.email,
+      avatar: contact.avatar,
       phone: contact.phone,
     ));
   }
@@ -33,6 +34,7 @@ class ContactRepositoryImpl implements ContactRepository {
       id: contact.id,
       name: contact.name,
       email: contact.email,
+      avatar: contact.avatar,
       phone: contact.phone,
     ));
   }

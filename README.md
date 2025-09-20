@@ -39,7 +39,7 @@ Dự án này sử dụng các thư viện sau để xây dựng các chức nă
 
 1. **Clone code về máy** 
 2. **Tạo project Flutter trong thư mục hiện tại**
-flutter create .
+flutter create contact_list
 3. **Cấu hình Android NDK** Mở file `android/app/build.gradle.kts` và thay đổi `ndkVersion` như sau: ndkVersion = "27.0.12077973"
 4. **Cài đặt dependencies và chạy app**
 flutter pub get

@@ -1,4 +1,4 @@
-import 'package:contact_list/injection.dart';
+import 'package:contact_list/domain/entities/contact.dart';
 import 'package:contact_list/presentation/blocs/auth/auth_bloc.dart';
 import 'package:contact_list/presentation/blocs/contact/contact_bloc.dart';
 import 'package:contact_list/presentation/blocs/contact/contact_event.dart';
@@ -19,12 +19,6 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
-  @override
-  void initState() {
-    super.initState();
-    final bloc = getIt<ContactBloc>();
-    bloc.add(LoadContactsEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +91,7 @@ class _ContactPageState extends State<ContactPage> {
 }
 
 class ContactListView extends StatelessWidget {
-  final List contacts;
+  final List<Contact> contacts;
   const ContactListView({super.key, required this.contacts});
 
   @override
@@ -109,7 +103,7 @@ class ContactListView extends StatelessWidget {
         final c = contacts[index];
         return CardInfo(
           id: c.id,
-          avatar: "https://i.pravatar.cc/150?u=${c.id}",
+          avatar: c.avatar,
           name: c.name,
           email: c.email,
           phone: c.phone,
@@ -124,7 +118,7 @@ class ContactListView extends StatelessWidget {
                     name: c.name,
                     email: c.email,
                     phone: c.phone,
-                    avatar: "https://i.pravatar.cc/150?u=${c.id}",
+                    avatar: c.avatar,
                   ),
                 ),
               );
@@ -137,7 +131,7 @@ class ContactListView extends StatelessWidget {
 }
 
 class ContactGridView extends StatelessWidget {
-  final List contacts;
+  final List<Contact> contacts;
   const ContactGridView({super.key, required this.contacts});
 
   @override
@@ -154,7 +148,7 @@ class ContactGridView extends StatelessWidget {
         final c = contacts[index];
         return CardInfo(
           id: c.id,
-          avatar: "https://i.pravatar.cc/150?u=${c.id}",
+          avatar: c.avatar,
           name: c.name,
           email: c.email,
           phone: c.phone,
@@ -169,7 +163,7 @@ class ContactGridView extends StatelessWidget {
                     name: c.name,
                     email: c.email,
                     phone: c.phone,
-                    avatar: "https://i.pravatar.cc/150?u=${c.id}",
+                    avatar: c.avatar,
                   ),
                 ),
               );
